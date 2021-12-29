@@ -158,10 +158,21 @@ public class ShoppingCart {
      * but not more than 80% total
      */
     public static int calculateDiscount(ItemType type, int quantity){
+        Integer discount = getDiscount(type, quantity);
+        if (discount == null) return 0;
+        if (discount < 80) {
+            discount += quantity / 10;
+            if (discount > 80)
+                discount = 80;
+        }
+        return discount;
+    }
+
+    private static Integer getDiscount(ItemType type, int quantity) {
         int discount = 0;
         switch (type) {
             case NEW:
-                return 0;
+                return null;
             case REGULAR:
                 discount = 0;
                 break;
@@ -173,13 +184,9 @@ public class ShoppingCart {
                 discount = 70;
                 break;
         }
-        if (discount < 80) {
-            discount += quantity / 10;
-            if (discount > 80)
-                discount = 80;
-        }
         return discount;
     }
+
     /** item info */
     private static class Item{
         String title;
